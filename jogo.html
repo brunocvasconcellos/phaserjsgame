@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Jogo - URCAMP</title>
+    <style>* { padding: 0; margin: 0; }</style>
+    <script src="js/phaser.min.js"></script>
+    <script src="js/funcoes.js"></script>
+</head>
+<body>
+<script>
+var game = new Phaser.Game(800, 500, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+var grupoBolas;
+var boneco;
+var cursors;
+var totalBolas=1;
+var totalInimigos=5;
+var bolas=0;
+var barras;
+var grupoPlataformas;
+var addPlataforma;	
+var velocidade = 150;
+var pular;
+var fundo;
+var barraCentral;
+var inimigo;
+var inimigos;
+var grupoInimigos;
+var plataforma;
+var desce = true;
+
+function preload() {
+    game.load.image('dude'    , 'assets/sprites/boneco.png');
+    game.load.image('inimigo' , 'assets/sprites/inimigo.png');
+    game.load.image('bola'    , 'assets/sprites/bola.png');
+    game.load.image('barra'   , 'assets/sprites/barra.png');
+    game.load.image('fundo'   , 'assets/sprites/fundo.png');
+    game.load.audio('bola_inimigo', ['assets/audio/bola_bate_inimigo.wav']);
+    game.load.audio('venceu'        , ['assets/audio/venceu.wav']);
+    game.load.audio('perdeu'        , ['assets/audio/perdeu.wav']);
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
+}
+
+function create() {
+	iniciaJogo();
+}
+
+function update () {
+
+     game.physics.arcade.collide(grupoBolas, boneco);
+     game.physics.arcade.collide(grupoBolas, barras);
+     game.physics.arcade.collide(grupoBolas, grupoBolas);
+     game.physics.arcade.collide(boneco, barras);
+     game.physics.arcade.collide(boneco, grupoPlataformas);
+     game.physics.arcade.collide(grupoBolas, grupoPlataformas);
+     game.physics.arcade.collide(grupoBolas, barraCentral);
+     game.physics.arcade.collide(boneco, barraCentral);
+
+    boneco.body.velocity.setTo(0, 0);
+
+    if (cursors.down.isDown)
+    {
+        boneco.body.velocity.y =  100;
+    }
+    else if (cursors.left.isDown)
+    {
+        boneco.body.velocity.x = -300;
+    }
+    else if (cursors.right.isDown)
+    {
+        boneco.body.velocity.x = 500;
+    } 
+    else if (cursors.up.isDown)
+    {
+	 boneco.body.velocity.y = -500;	
+    }
+
+
+    movimentaBarras();
+    movimentaBarraCentral();
+    atualizaInimigos();
+
+}
+
+</script></body>
+</html>
+
